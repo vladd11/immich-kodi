@@ -1,17 +1,19 @@
-import http.client
+import sys
+from urllib.parse import parse_qsl
+
 import sys
 from urllib.parse import parse_qsl
 
 import xbmcgui
 import xbmcplugin
 
-from album import list_albums
+from album import list_albums, album
 from timeline import timeline, time
-from utils import SERVER_URL, API_KEY, get_url
+from utils import get_url
 
 DEBUG = False
 if DEBUG:
-    import debug
+    pass
 
 URL = sys.argv[0]
 HANDLE = int(sys.argv[1])
@@ -29,6 +31,8 @@ if __name__ == '__main__':
         timeline()
     elif params['action'] == 'albums':
         list_albums()
+    elif params['action'] == 'album':
+        album(params['id'])
     elif params['action'] == 'time':
         time(params['id'])
 

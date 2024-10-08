@@ -1,9 +1,9 @@
 import http.client
-import os
 import sys
 from datetime import datetime
 from urllib.parse import urlencode, urlparse
 
+import xbmc
 import xbmcplugin
 from xbmcaddon import Addon
 from xbmcvfs import translatePath
@@ -16,6 +16,8 @@ API_KEY = xbmcplugin.getSetting(HANDLE, "api_key")
 ADDON_PATH = translatePath(Addon().getAddonInfo('path'))
 conn = http.client.HTTPSConnection(SERVER_URL.netloc) if SERVER_URL.scheme == 'https' \
     else http.client.HTTPConnection(SERVER_URL.netloc)
+datelong = xbmc.getRegion('datelong')
+
 
 months = ["Январь", "Февраль",
           "Март", "Апрель", "Май",

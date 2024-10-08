@@ -7,10 +7,9 @@ import xbmc
 import xbmcgui
 import xbmcplugin
 
-from utils import conn, API_KEY, get_url, getThumbUrl, RAW_SERVER_URL
+from utils import conn, API_KEY, get_url, getThumbUrl, RAW_SERVER_URL, datelong
 
 HANDLE = int(sys.argv[1])
-datelong = xbmc.getRegion('datelong')
 
 
 def last_day_of_month(any_day):
