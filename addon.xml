@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.vladd11.immich"
-       version="3.0.1"
-       name="Example Kodi Video Plugin"
-       provider-name="Roman_V_M">
+       version="1.0.0"
+       name="Immich"
+       provider-name="Immich">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
     </requires>

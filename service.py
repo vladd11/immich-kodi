@@ -1,16 +1,13 @@
 import http.client
 import os
-import sys
-import traceback
-from http.server import SimpleHTTPRequestHandler, HTTPServer, BaseHTTPRequestHandler
-from urllib.parse import urlparse, ParseResult, urlunparse
+from http.server import HTTPServer, BaseHTTPRequestHandler
+from urllib.parse import urlparse
 
 import xbmcaddon
-import xbmcplugin
 
-DEBUG = True
+DEBUG = False
 if DEBUG:
-    import debug
+    pass
 
 HANDLE = xbmcaddon.Addon('plugin.vladd11.immich')
 RAW_SERVER_URL = HANDLE.getSetting("immich_url")

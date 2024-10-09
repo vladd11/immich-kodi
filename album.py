@@ -1,11 +1,8 @@
-import http.client
 import json
 import os
-import random
 import sys
 from datetime import datetime
 
-import requests
 import xbmcgui
 import xbmcplugin
 
