@@ -4,6 +4,8 @@ from urllib.parse import parse_qsl
 import sys
 from urllib.parse import parse_qsl
 
+import xbmc
+import xbmcaddon
 import xbmcgui
 import xbmcplugin
 
@@ -17,14 +19,15 @@ if DEBUG:
 
 URL = sys.argv[0]
 HANDLE = int(sys.argv[1])
+addon = xbmcaddon.Addon()
 if __name__ == '__main__':
     params = dict(parse_qsl(sys.argv[2][1:]))
 
     if not params.get('action'):
         xbmcplugin.addDirectoryItem(HANDLE, get_url(action='timeline'),
-                                    xbmcgui.ListItem("Timeline"), True)
+                                    xbmcgui.ListItem(addon.getLocalizedString(30002)), True)
         xbmcplugin.addDirectoryItem(HANDLE, get_url(action='albums'),
-                                    xbmcgui.ListItem("Albums"), True)
+                                    xbmcgui.ListItem(addon.getLocalizedString(30003)), True)
 
         xbmcplugin.endOfDirectory(HANDLE)
     elif params['action'] == 'timeline':

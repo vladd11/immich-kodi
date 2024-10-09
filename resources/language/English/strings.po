@@ -24,3 +24,11 @@ msgstr ""
 msgctxt "#30001"
 msgid "Immich API key"
 msgstr ""
+
+msgctxt "#30002"
+msgid "Timeline"
+msgstr ""
+
+msgctxt "#30003"
+msgid "Albums"
+msgstr ""

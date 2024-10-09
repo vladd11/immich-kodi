@@ -6,7 +6,7 @@
                     <level>0</level>
                     <default/>
                     <constraints>
-                        <allowempty>true</allowempty>
+                        <allowempty>false</allowempty>
                     </constraints>
                     <control format="string" type="edit">
                     </control>
@@ -15,7 +15,7 @@
                     <level>0</level>
                     <default/>
                     <constraints>
-                        <allowempty>true</allowempty>
+                        <allowempty>false</allowempty>
                     </constraints>
                     <control format="string" type="edit">
                     </control>
