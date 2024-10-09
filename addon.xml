@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="plugin.vladd11.immich"
+<addon id="plugin.video.immich"
        version="1.0.0"
        name="Immich"
        provider-name="Immich">

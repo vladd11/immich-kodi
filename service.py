@@ -9,7 +9,7 @@ DEBUG = False
 if DEBUG:
     pass
 
-HANDLE = xbmcaddon.Addon('plugin.vladd11.immich')
+HANDLE = xbmcaddon.Addon('plugin.video.immich')
 RAW_SERVER_URL = HANDLE.getSetting("immich_url")
 SERVER_URL = urlparse(RAW_SERVER_URL)
 API_KEY = HANDLE.getSetting("api_key")
