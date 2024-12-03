@@ -19,11 +19,11 @@ conn = http.client.HTTPSConnection(SERVER_URL.netloc) if SERVER_URL.scheme == 'h
 datelong = xbmc.getRegion('datelong')
 
 
-months = ["Январь", "Февраль",
-          "Март", "Апрель", "Май",
-          "Июнь", "Июль", "Август",
-          "Сентябрь", "Октябрь", "Ноябрь",
-          "Декабрь"]
+months = ["January", "February",
+          "March", "April", "May",
+          "June", "July", "August",
+          "September", "October", "November",
+          "December"]
 
 
 def toReadableDate(date: str):
