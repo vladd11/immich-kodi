@@ -28,10 +28,11 @@ def time(id):
     res = json.loads(conn.getresponse().read().decode('utf-8'))
 
     items = [
-        (f'http://localhost:6819/api/assets/{i["id"]}/original{os.path.splitext(i["originalFileName"])[1]}|x-api-key={API_KEY}',
+        (f'{RAW_SERVER_URL}/api/assets/{i["id"]}/original|x-api-key={API_KEY}',
          xbmcgui.ListItem(datetime.fromisoformat(i['fileCreatedAt'][:-5]).strftime(datelong)), False) for i in res]
     for i in range(len(res)):
         items[i][1].setArt({'thumb': f'{RAW_SERVER_URL}/api/assets/{res[i]["id"]}/thumbnail|x-api-key={API_KEY}'})
+        items[i][1].setProperty('MimeType', res[i]["originalMimeType"])
     xbmcplugin.addDirectoryItems(HANDLE, items, len(items))
     xbmcplugin.addSortMethod(HANDLE, sortMethod=xbmcplugin.SORT_METHOD_DATE)
     xbmcplugin.endOfDirectory(HANDLE, cacheToDisc=False)
