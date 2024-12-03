@@ -7,7 +7,7 @@ import xbmc
 import xbmcgui
 import xbmcplugin
 
-from utils import conn, API_KEY, get_url, getThumbUrl, RAW_SERVER_URL, datelong
+from utils import conn, API_KEY, get_url, getThumbUrl, RAW_SERVER_URL, datelong, timestamp
 
 HANDLE = int(sys.argv[1])
 
@@ -29,10 +29,11 @@ def time(id):
 
     items = [
         (f'{RAW_SERVER_URL}/api/assets/{i["id"]}/original|x-api-key={API_KEY}',
-         xbmcgui.ListItem(datetime.fromisoformat(i['fileCreatedAt'][:-5]).strftime(datelong)), False) for i in res]
+         xbmcgui.ListItem(datetime.fromisoformat(i['localDateTime'][:-5]).strftime(datelong + " " + timestamp)), False) for i in res]
     for i in range(len(res)):
         items[i][1].setArt({'thumb': f'{RAW_SERVER_URL}/api/assets/{res[i]["id"]}/thumbnail|x-api-key={API_KEY}'})
         items[i][1].setProperty('MimeType', res[i]["originalMimeType"])
+        items[i][1].setDateTime(datetime.fromisoformat(res[i]['localDateTime'][:-5]).strftime('%Y-%m-%dT00:00:00Z'))
     xbmcplugin.addDirectoryItems(HANDLE, items, len(items))
     xbmcplugin.addSortMethod(HANDLE, sortMethod=xbmcplugin.SORT_METHOD_DATE)
     xbmcplugin.endOfDirectory(HANDLE, cacheToDisc=False)
@@ -48,7 +49,6 @@ def timeline():
 
     xbmcplugin.setContent(HANDLE, 'files')
 
-    datelong = xbmc.getRegion('datelong')
     items = [(get_url(action='time', id=i['timeBucket']),
               xbmcgui.ListItem(datetime.fromisoformat(i['timeBucket'][:-5]).strftime(datelong)),
               True) for i

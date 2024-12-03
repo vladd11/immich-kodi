@@ -17,6 +17,7 @@ ADDON_PATH = translatePath(Addon().getAddonInfo('path'))
 conn = http.client.HTTPSConnection(SERVER_URL.netloc) if SERVER_URL.scheme == 'https' \
     else http.client.HTTPConnection(SERVER_URL.netloc)
 datelong = xbmc.getRegion('datelong')
+timestamp = xbmc.getRegion('time')
 
 
 months = ["January", "February",
