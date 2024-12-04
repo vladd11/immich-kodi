@@ -44,4 +44,4 @@ def get_url(**kwargs):
 
 
 def getThumbUrl(id):
-    return f'{SERVER_URL}/api/asset/thumbnail/{id}?format=WEBP|x-api-key={API_KEY}'
+    return f'{RAW_SERVER_URL}/api/assets/{id}/thumbnail|x-api-key={API_KEY}'

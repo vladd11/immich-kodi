@@ -31,7 +31,7 @@ def time(id):
         (f'{RAW_SERVER_URL}/api/assets/{i["id"]}/original|x-api-key={API_KEY}',
          xbmcgui.ListItem(datetime.fromisoformat(i['localDateTime'][:-5]).strftime(datelong + " " + timestamp)), False) for i in res]
     for i in range(len(res)):
-        items[i][1].setArt({'thumb': f'{RAW_SERVER_URL}/api/assets/{res[i]["id"]}/thumbnail|x-api-key={API_KEY}'})
+        items[i][1].setArt({'thumb': getThumbUrl(res[i]["id"])})
         items[i][1].setProperty('MimeType', res[i]["originalMimeType"])
         items[i][1].setDateTime(datetime.fromisoformat(res[i]['localDateTime'][:-5]).strftime('%Y-%m-%dT00:00:00Z'))
     xbmcplugin.addDirectoryItems(HANDLE, items, len(items))
