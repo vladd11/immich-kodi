@@ -17,13 +17,14 @@ ADDON_PATH = translatePath(Addon().getAddonInfo('path'))
 conn = http.client.HTTPSConnection(SERVER_URL.netloc) if SERVER_URL.scheme == 'https' \
     else http.client.HTTPConnection(SERVER_URL.netloc)
 datelong = xbmc.getRegion('datelong')
+timestamp = xbmc.getRegion('time')
 
 
-months = ["Январь", "Февраль",
-          "Март", "Апрель", "Май",
-          "Июнь", "Июль", "Август",
-          "Сентябрь", "Октябрь", "Ноябрь",
-          "Декабрь"]
+months = ["January", "February",
+          "March", "April", "May",
+          "June", "July", "August",
+          "September", "October", "November",
+          "December"]
 
 
 def toReadableDate(date: str):
@@ -43,4 +44,4 @@ def get_url(**kwargs):
 
 
 def getThumbUrl(id):
-    return f'{SERVER_URL}/api/asset/thumbnail/{id}?format=WEBP|x-api-key={API_KEY}'
+    return f'{RAW_SERVER_URL}/api/assets/{id}/thumbnail|x-api-key={API_KEY}'
