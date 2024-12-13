@@ -16,7 +16,7 @@ def list_albums():
         'Accept': 'application/json',
         'x-api-key': API_KEY
     }
-    conn.request("GET", "/api/albums?shared=true", '', headers)
+    conn.request("GET", "/api/albums", '', headers)
     res = json.loads(conn.getresponse().read().decode('utf-8'))
 
     items = [(get_url(action='album', id=i['id']), xbmcgui.ListItem(i['albumName']), True) for i in res]
