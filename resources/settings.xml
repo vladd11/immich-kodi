@@ -21,6 +21,15 @@
                     <control format="string" type="edit">
                     </control>
                 </setting>
+                <setting id="shared_only" type="boolean" label="30005">
+                    <level>0</level>
+                    <default>false</default>
+                    <constraints>
+                        <allowempty>true</allowempty>
+                    </constraints>
+                    <control type="toggle">
+                    </control>
+                </setting>
             </group>
         </category>
     </section>

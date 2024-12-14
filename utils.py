@@ -11,6 +11,7 @@ from xbmcvfs import translatePath
 HANDLE = int(sys.argv[1])
 
 RAW_SERVER_URL = xbmcplugin.getSetting(HANDLE, "immich_url")
+SHARED_ONLY = xbmcplugin.getSetting(HANDLE, "shared_only")
 SERVER_URL = urlparse(RAW_SERVER_URL)
 API_KEY = xbmcplugin.getSetting(HANDLE, "api_key")
 ADDON_PATH = translatePath(Addon().getAddonInfo('path'))
@@ -18,18 +19,6 @@ conn = http.client.HTTPSConnection(SERVER_URL.netloc) if SERVER_URL.scheme == 'h
     else http.client.HTTPConnection(SERVER_URL.netloc)
 datelong = xbmc.getRegion('datelong')
 timestamp = xbmc.getRegion('time')
-
-
-months = ["January", "February",
-          "March", "April", "May",
-          "June", "July", "August",
-          "September", "October", "November",
-          "December"]
-
-
-def toReadableDate(date: str):
-    dt = datetime.fromisoformat(date)
-    return f'{months[dt.month]} {dt.year}'
 
 
 def get_url(**kwargs):

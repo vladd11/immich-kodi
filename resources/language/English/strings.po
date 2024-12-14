@@ -27,3 +27,27 @@ msgstr ""
 msgctxt "#30004"
 msgid ""
 msgstr ""
+
+msgctxt "#30005"
+msgid "Show only shared albums"
+msgstr ""
+
+msgctxt "#30006"
+msgid "Log in"
+msgstr ""
+
+msgctxt "#30007"
+msgid "Connection error"
+msgstr ""
+
+msgctxt "#30008"
+msgid "Can't connect to the server. Check the address of Immich server and API key."
+msgstr ""
+
+msgctxt "#30009"
+msgid "Authorization error"
+msgstr ""
+
+msgctxt "#30010"
+msgid "API Key may be invalid."
+msgstr ""
