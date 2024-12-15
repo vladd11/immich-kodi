@@ -10,7 +10,7 @@ assignees: ''
 **Describe the bug**
 A clear and concise description of what the bug is.
 
-**Kodi version**
+***Kodi version***
 
 **To Reproduce**
 Steps to reproduce the behavior:
