@@ -24,8 +24,13 @@ def list_albums():
 
     items = [(get_url(action='album', id=i['id']), xbmcgui.ListItem(i['albumName']), True) for i in res]
     for i in range(len(res)):
+        if 'startDate' in res[i]:
+            items[i][1].setDateTime(
+                datetime.fromisoformat(res[i]['startDate'][:-5]).strftime('%Y-%m-%dT%H:%M:%SZ'))
         if 'albumThumbnailAssetId' in res[i]:
             items[i][1].setArt({'thumb': getThumbUrl(res[i]['albumThumbnailAssetId'])})
+    xbmcplugin.addSortMethod(HANDLE, sortMethod=xbmcplugin.SORT_METHOD_DATE)
+    xbmcplugin.addSortMethod(HANDLE, sortMethod=xbmcplugin.SORT_METHOD_LABEL)
     xbmcplugin.addDirectoryItems(HANDLE, items, len(items))
     xbmcplugin.endOfDirectory(HANDLE, cacheToDisc=False)
 
@@ -51,7 +56,7 @@ def album(id):
         items[i][1].setArt({'thumb': getThumbUrl(res[i]["id"])})
         items[i][1].setProperty('MimeType', res[i]["originalMimeType"])
         items[i][1].setDateTime(
-            datetime.fromisoformat(res[i]['exifInfo']['dateTimeOriginal'][:-5]).strftime('%Y-%m-%dT00:00:00Z'))
+            datetime.fromisoformat(res[i]['exifInfo']['dateTimeOriginal'][:-5]).strftime('%Y-%m-%dT%H:%M:%SZ'))
     xbmcplugin.addDirectoryItems(HANDLE, items, len(items))
     xbmcplugin.addSortMethod(HANDLE, sortMethod=xbmcplugin.SORT_METHOD_DATE)
     xbmcplugin.endOfDirectory(HANDLE, cacheToDisc=False)
