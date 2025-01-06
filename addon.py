@@ -14,7 +14,7 @@ from slideshow import slideshow
 from timeline import timeline, time
 from utils import get_url, API_KEY, conn, RAW_SERVER_URL, set_locale
 
-DEBUG = True
+DEBUG = False
 if DEBUG:
     import debug
 
