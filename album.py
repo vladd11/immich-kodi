@@ -3,10 +3,12 @@ import os
 import sys
 from datetime import datetime
 
+import xbmc
 import xbmcgui
 import xbmcplugin
 
-from utils import API_KEY, getThumbUrl, get_url, conn, RAW_SERVER_URL, datelong, timestamp, SHARED_ONLY
+from utils import API_KEY, getThumbUrl, get_url, conn, RAW_SERVER_URL, datelong, timestamp, SHARED_ONLY, \
+    strftime_polyfill
 
 HANDLE = int(sys.argv[1])
 
@@ -14,6 +16,7 @@ HANDLE = int(sys.argv[1])
 def list_albums():
     headers = {
         'Accept': 'application/json',
+        'User-agent': xbmc.getUserAgent(),
         'x-api-key': API_KEY
     }
     conn.request("GET", f"/api/albums?shared={SHARED_ONLY or 'false'}", '', headers)
@@ -32,6 +35,7 @@ def album(id):
 
     headers = {
         'Accept': 'application/json',
+        'User-agent': xbmc.getUserAgent(),
         'x-api-key': API_KEY
     }
     conn.request("GET", f"/api/albums/{id}", '', headers)
@@ -39,12 +43,15 @@ def album(id):
 
     items = [
         (
-        f'{RAW_SERVER_URL}/api/assets/{i["id"]}/original|x-api-key={API_KEY}',
-        xbmcgui.ListItem(datetime.fromisoformat(i['localDateTime'][:-5]).strftime(datelong + " " + timestamp)), False) for i in res]
+            f'{RAW_SERVER_URL}/api/assets/{i["id"]}/original|x-api-key={API_KEY}',
+            xbmcgui.ListItem(
+                strftime_polyfill(datetime.fromisoformat(i['localDateTime'][:-5]), datelong + " " + timestamp)), False)
+        for i in res]
     for i in range(len(res)):
         items[i][1].setArt({'thumb': getThumbUrl(res[i]["id"])})
         items[i][1].setProperty('MimeType', res[i]["originalMimeType"])
-        items[i][1].setDateTime(datetime.fromisoformat(res[i]['localDateTime'][:-5]).strftime('%Y-%m-%dT00:00:00Z'))
+        items[i][1].setDateTime(
+            datetime.fromisoformat(res[i]['exifInfo']['dateTimeOriginal'][:-5]).strftime('%Y-%m-%dT00:00:00Z'))
     xbmcplugin.addDirectoryItems(HANDLE, items, len(items))
     xbmcplugin.addSortMethod(HANDLE, sortMethod=xbmcplugin.SORT_METHOD_DATE)
     xbmcplugin.endOfDirectory(HANDLE, cacheToDisc=False)

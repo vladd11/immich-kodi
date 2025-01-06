@@ -51,3 +51,19 @@ msgstr ""
 msgctxt "#30010"
 msgid "API Key may be invalid."
 msgstr ""
+
+msgctxt "#30011"
+msgid "Slideshow"
+msgstr ""
+
+msgctxt "#30012"
+msgid "Select first date"
+msgstr ""
+
+msgctxt "#30013"
+msgid "Select second date"
+msgstr ""
+
+msgctxt "#30015"
+msgid "Videos"
+msgstr ""
