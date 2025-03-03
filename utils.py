@@ -1,9 +1,7 @@
-import datetime
 import http.client
-import re
 import sys
-from datetime import date
-from urllib.parse import urlencode, urlparse, quote
+from datetime import datetime
+from urllib.parse import urlencode, urlparse
 
 import xbmc
 import xbmcplugin
@@ -14,6 +12,7 @@ HANDLE = int(sys.argv[1])
 
 RAW_SERVER_URL = xbmcplugin.getSetting(HANDLE, "immich_url")
 SHARED_ONLY = xbmcplugin.getSetting(HANDLE, "shared_only")
+ASSET_NAMETYPE = int(xbmcplugin.getSetting(HANDLE, "asset_name"))
 SERVER_URL = urlparse(RAW_SERVER_URL)
 API_KEY = xbmcplugin.getSetting(HANDLE, "api_key")
 ADDON_PATH = translatePath(Addon().getAddonInfo('path'))
@@ -38,10 +37,19 @@ def kodi_version_major():
 workaround = xbmc.getCondVisibility('System.Platform.Android') and kodi_version_major() > 20
 
 
-def strftime_polyfill(dt: datetime.datetime, fmt: str):
+def strftime_polyfill(dt: datetime, fmt: str):
     if workaround and "%-d" in fmt:
         fmt = fmt.replace('%-d', dt.strftime('%d').lstrip('0'))
     return dt.strftime(fmt)
+
+
+def get_asset_name(asset):
+    if ASSET_NAMETYPE == 0:
+        return strftime_polyfill(datetime.fromisoformat(asset['localDateTime'][:-5]), datelong + " " + timestamp)
+    elif ASSET_NAMETYPE == 1:
+        return asset['originalFileName']
+    else:
+        return strftime_polyfill(datetime.fromisoformat(asset['localDateTime'][:-5]), datelong + " " + timestamp)
 
 
 def jsonrpc(*args, **kwargs):
