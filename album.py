@@ -50,13 +50,13 @@ def album(id):
         (
             f'{RAW_SERVER_URL}/api/assets/{i["id"]}/original|x-api-key={API_KEY}',
             xbmcgui.ListItem(
-                strftime_polyfill(datetime.fromisoformat(i['localDateTime'][:-5]), datelong + " " + timestamp)), False)
+                i["originalFileName"]), False)
         for i in res]
     for i in range(len(res)):
         items[i][1].setArt({'thumb': getThumbUrl(res[i]["id"])})
         items[i][1].setProperty('MimeType', res[i]["originalMimeType"])
         items[i][1].setDateTime(
-            datetime.fromisoformat(res[i]['exifInfo']['dateTimeOriginal'][:-5]).strftime('%Y-%m-%dT%H:%M:%SZ'))
+            datetime.fromisoformat(res[i]['fileModifiedAt']).strftime('%Y-%m-%dT%H:%M:%S%z'))
     xbmcplugin.addDirectoryItems(HANDLE, items, len(items))
     xbmcplugin.addSortMethod(HANDLE, sortMethod=xbmcplugin.SORT_METHOD_DATE)
     xbmcplugin.endOfDirectory(HANDLE, cacheToDisc=False)
