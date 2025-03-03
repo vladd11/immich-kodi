@@ -30,6 +30,19 @@
                     <control type="toggle">
                     </control>
                 </setting>
+                <setting id="asset_name" type="integer" label="30016">
+                    <level>0</level>
+					<default>0</default>
+					<constraints>
+						<options>
+							<option label="30017">0</option>
+							<option label="30018">1</option>
+						</options>
+					</constraints>
+					<control format="string" type="list">
+						<heading>30016</heading>
+					</control>
+                </setting>
             </group>
         </category>
     </section>

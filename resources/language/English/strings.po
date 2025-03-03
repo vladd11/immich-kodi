@@ -67,3 +67,15 @@ msgstr ""
 msgctxt "#30015"
 msgid "Videos"
 msgstr ""
+
+msgctxt "#30016"
+msgid "Show as a name"
+msgstr ""
+
+msgctxt "#30018"
+msgid "Original file name"
+msgstr ""
+
+msgctxt "#30017"
+msgid "Date & time"
+msgstr ""

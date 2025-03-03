@@ -7,7 +7,7 @@ import xbmcgui
 import xbmcplugin
 
 from utils import conn, API_KEY, get_url, getThumbUrl, datelong, timestamp, get_playback, \
-    strftime_polyfill
+    strftime_polyfill, get_asset_name
 
 HANDLE = int(sys.argv[1])
 
@@ -33,16 +33,17 @@ def time(id, video):
     for i in res:
         if video and i['type'] == 'IMAGE':
             continue
+        if not ('dateTimeOriginal' in i['exifInfo']):
+            i['exifInfo']['dateTimeOriginal'] = (
+                datetime.fromisoformat(i['fileModifiedAt'].replace('Z', '+00:00')).strftime('%Y-%m-%dT%H:%M:%S%z'))
+
         items.append((get_playback(i),
-                      xbmcgui.ListItem(
-                          strftime_polyfill(datetime.fromisoformat(i['localDateTime'][:-5]),
-                                            datelong + " " + timestamp)), False))
+                      xbmcgui.ListItem(get_asset_name(i)), False))
         itemsR.append(i)
     for i in range(len(items)):
         items[i][1].setArt({'thumb': getThumbUrl(itemsR[i]["id"])})
         items[i][1].setProperty('MimeType', itemsR[i]["originalMimeType"])
-        items[i][1].setDateTime(
-            strftime_polyfill(datetime.fromisoformat(itemsR[i]['localDateTime'][:-5]), '%Y-%m-%dT00:00:00Z'))
+        items[i][1].setDateTime(res[i]['exifInfo']['dateTimeOriginal'].replace('Z', '+00:00'))
     xbmcplugin.addDirectoryItems(HANDLE, items, len(items))
     xbmcplugin.addSortMethod(HANDLE, sortMethod=xbmcplugin.SORT_METHOD_DATE)
     xbmcplugin.endOfDirectory(HANDLE, cacheToDisc=False)
