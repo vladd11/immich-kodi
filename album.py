@@ -26,7 +26,7 @@ def list_albums():
     for i in range(len(res)):
         if 'startDate' in res[i]:
             items[i][1].setDateTime(
-                datetime.fromisoformat(res[i]['startDate'][:-5]).strftime('%Y-%m-%dT%H:%M:%SZ'))
+                datetime.fromisoformat(res[i]['startDate'][:-6]).strftime('%Y-%m-%dT%H:%M:%SZ'))
         if 'albumThumbnailAssetId' in res[i]:
             items[i][1].setArt({'thumb': getThumbUrl(res[i]['albumThumbnailAssetId'])})
     xbmcplugin.addSortMethod(HANDLE, sortMethod=xbmcplugin.SORT_METHOD_DATE)
