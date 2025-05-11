@@ -45,11 +45,11 @@ def strftime_polyfill(dt: datetime, fmt: str):
 
 def get_asset_name(asset):
     if ASSET_NAMETYPE == 0:
-        return strftime_polyfill(datetime.fromisoformat(asset['localDateTime'][:-5]), datelong + " " + timestamp)
+        return strftime_polyfill(datetime.fromisoformat(asset['localDateTime'][:-6]), datelong + " " + timestamp)
     elif ASSET_NAMETYPE == 1:
         return asset['originalFileName']
     else:
-        return strftime_polyfill(datetime.fromisoformat(asset['localDateTime'][:-5]), datelong + " " + timestamp)
+        return strftime_polyfill(datetime.fromisoformat(asset['localDateTime'][:-6]), datelong + " " + timestamp)
 
 
 def jsonrpc(*args, **kwargs):
