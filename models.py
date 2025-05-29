@@ -73,10 +73,11 @@ class ExifInfo:
 
 
 @dataclass
-class AlbumAsset:
+class ItemAsset:
     id: str
     deviceAssetId: str
     ownerId: str
+
     deviceId: str
     libraryId: Optional[str]
     type: str
@@ -101,7 +102,38 @@ class AlbumAsset:
     hasMetadata: bool = True
     duplicateId: Optional[str] = None
     resized: bool = False
+    owner: Optional[User] = None
+    tags: Optional[List[str]] = None
+
+    unassignedFaces: Optional[List[str]] = None
+
+    stack: Optional[str] = None
 
     def __post_init__(self):
         if isinstance(self.exifInfo, dict):
             self.exifInfo = ExifInfo(**self.exifInfo)
+
+
+@dataclass
+class TimelineBucket:
+    timeBucket: str
+    count: int
+
+
+@dataclass
+class TimeBucket:
+    city: Optional[List[str]]
+    country: Optional[List[str]]
+    duration: Optional[List[float]]
+    id: List[str]
+    visibility: List[str]
+    isFavorite: List[str]
+    isImage: List[str]
+    isTrashed: List[str]
+    livePhotoVideoId: List[str]
+    localDateTime: List[str]
+    ownerId: List[str]
+    projectionType: Optional[str]
+    ratio: Optional[float]
+    status: List[str]
+    thumbhash: List[str]

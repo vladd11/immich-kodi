@@ -6,7 +6,7 @@ import xbmc
 import xbmcgui
 import xbmcplugin
 
-from models import Album, AlbumAsset
+from models import Album, ItemAsset
 from utils import (
     API_KEY,
     RAW_SERVER_URL,
@@ -57,7 +57,7 @@ def album(id):
     }
     conn.request("GET", f"/api/albums/{id}", "", headers)
     res = json.loads(conn.getresponse().read().decode("utf-8"))["assets"]
-    res = [AlbumAsset(**i) for i in res]
+    res = [ItemAsset(**i) for i in res]
 
     for i in res:
         if not i.exifInfo.dateTimeOriginal:

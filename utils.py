@@ -111,11 +111,15 @@ def set_locale():
     return True
 
 
-def get_playback(item):
-    if item["type"] == "IMAGE":
-        return f"{RAW_SERVER_URL}/api/assets/{item['id']}/thumbnail?size=preview|x-api-key={API_KEY}"
+def get_playback(id, type=None):
+    if type == "IMAGE":
+        # if item["type"] == "IMAGE":
+        return f"{RAW_SERVER_URL}/api/assets/{id}/thumbnail?size=preview|x-api-key={API_KEY}"
     else:
-        return f"{RAW_SERVER_URL}/api/assets/{item['id']}/video/playback|x-api-key={API_KEY}"
+        return f"{RAW_SERVER_URL}/api/assets/{id}/video/playback|x-api-key={API_KEY}"
+
+
+
 
 
 def get_url(**kwargs):
