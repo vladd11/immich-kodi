@@ -10,7 +10,6 @@ import xbmcgui
 import xbmcplugin
 
 from album import list_albums, album
-from slideshow import slideshow
 from timeline import timeline, time
 from utils import get_url, API_KEY, conn, RAW_SERVER_URL, set_locale
 
