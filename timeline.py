@@ -51,11 +51,10 @@ def time(id, video):
         headers,
     )
     res = json.loads(conn.getresponse().read().decode("utf-8"))
-    res = TimeBucket(**res)
 
     items = []
 
-    for id in res.id:
+    for id in res["id"]:
         item = get_asset_info(id)
         item = ItemAsset(**item)
         if video and item.type == "IMAGE":
