@@ -85,6 +85,7 @@ class ItemAsset:
     originalFileName: str
     originalMimeType: str
     thumbhash: str
+    createdAt: str
     fileCreatedAt: str
     createdAt: str
     fileModifiedAt: str
