@@ -26,7 +26,7 @@ def list_albums():
         "User-agent": xbmc.getUserAgent(),
         "x-api-key": API_KEY,
     }
-    conn.request("GET", f"/api/albums?shared={SHARED_ONLY or 'false'}", "", headers)
+    conn.request("GET", "/api/albums", "", headers)
     res = json.loads(conn.getresponse().read().decode("utf-8"))
     res = [Album(**i) for i in res]
 
