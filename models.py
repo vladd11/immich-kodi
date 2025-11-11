@@ -77,9 +77,7 @@ class ItemAsset:
     id: str
     deviceAssetId: str
     ownerId: str
-
     deviceId: str
-    libraryId: Optional[str]
     type: str
     originalPath: str
     originalFileName: str
@@ -96,6 +94,7 @@ class ItemAsset:
     visibility: str
     duration: str
     exifInfo: ExifInfo
+    libraryId: Optional[str] = None  # ← Added = None
     livePhotoVideoId: Optional[str] = None
     people: Optional[List[str]] = None
     checksum: Optional[str] = None
@@ -105,9 +104,7 @@ class ItemAsset:
     resized: bool = False
     owner: Optional[User] = None
     tags: Optional[List[str]] = None
-
     unassignedFaces: Optional[List[str]] = None
-
     stack: Optional[str] = None
 
     def __post_init__(self):
