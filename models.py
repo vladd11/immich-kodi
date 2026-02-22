@@ -84,6 +84,9 @@ class ItemAsset:
     originalMimeType: str
     thumbhash: str
     fileCreatedAt: str
+    width: str
+    height: str
+    isEdited: str
     createdAt: str
     fileModifiedAt: str
     localDateTime: str
