@@ -30,6 +30,7 @@ def list_albums():
     conn.request("GET", "/api/albums", "", headers)
     res = json.loads(conn.getresponse().read().decode("utf-8"))
     res = [Album.from_api_response(i) for i in res]
+    res = [album for album in res if album.assetCount > 0] # filter empty
 
     items = [
         (get_url(action="album", id=album.id), xbmcgui.ListItem(album.albumName), True)
