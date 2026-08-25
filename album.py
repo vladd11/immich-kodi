@@ -30,6 +30,7 @@ def list_albums():
     conn.request("GET", "/api/albums", "", headers)
     res = json.loads(conn.getresponse().read().decode("utf-8"))
     res = [Album.from_api_response(i) for i in res]
+    res = [album for album in res if album.assetCount > 0] # filter empty
 
     items = [
         (get_url(action="album", id=album.id), xbmcgui.ListItem(album.albumName), True)
@@ -66,18 +67,19 @@ def album(id):
                 i.fileModifiedAt
             ).strftime("%Y-%m-%dT%H:%M:%S%z")
 
-    items = [
-        (
-            f"{RAW_SERVER_URL}/api/assets/{asset.id}/original|x-api-key={API_KEY}",
-            xbmcgui.ListItem(get_asset_name(asset)),
-            False,
-        )
-        for asset in res
-    ]
+    items = []
+    for asset in res:
+        if asset.type == "IMAGE":
+            url = f"{RAW_SERVER_URL}/api/assets/{asset.id}/original|x-api-key={API_KEY}"
+        else:
+            url = f"{RAW_SERVER_URL}/api/assets/{asset.id}/video/playback|x-api-key={API_KEY}"
+        items.append((url, xbmcgui.ListItem(get_asset_name(asset)), False))
+
     for item, asset in zip(items, res):
         item[1].setArt({"thumb": getThumbUrl(asset.id)})
         item[1].setProperty("MimeType", asset.originalMimeType)
         item[1].setDateTime(asset.exifInfo.dateTimeOriginal)
+
     xbmcplugin.addDirectoryItems(HANDLE, items, len(items))
     xbmcplugin.addSortMethod(HANDLE, sortMethod=xbmcplugin.SORT_METHOD_DATE)
     xbmcplugin.endOfDirectory(HANDLE, cacheToDisc=False)
