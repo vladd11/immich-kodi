@@ -1,44 +1,52 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List, Optional
+
+
+def _filter_fields(cls, data: dict) -> dict:
+    known = {f for f in cls.__dataclass_fields__}
+    return {k: v for k, v in data.items() if k in known}
 
 
 @dataclass
 class User:
-    id: str
-    email: str
-    name: str
-    profileImagePath: str
-    avatarColor: str
-    profileChangedAt: str
+    id: Optional[str] = None
+    email: Optional[str] = None
+    name: Optional[str] = None
+    profileImagePath: Optional[str] = None
+    avatarColor: Optional[str] = None
+    profileChangedAt: Optional[str] = None
 
 
 @dataclass
 class AlbumUser:
-    user: User
-    role: str
+    user: Optional[User] = None
+    role: Optional[str] = None
+
+    def __post_init__(self):
+        if isinstance(self.user, dict):
+            self.user = User(**_filter_fields(User, self.user))
 
 
 @dataclass
 class Album:
-    albumName: str
-    description: str
-    albumThumbnailAssetId: str
-    createdAt: str
-    updatedAt: str
     id: str
-    ownerId: str
-    owner: User
-    albumUsers: List[AlbumUser]
-    shared: bool
-    hasSharedLink: bool
-    startDate: str
-    endDate: str
-    assets: list
-    assetCount: int
-    isActivityEnabled: bool
-    order: str
-    lastModifiedAssetTimestamp: str
-    # Additional optional fields for API resilience
+    albumName: str
+    description: Optional[str] = None
+    albumThumbnailAssetId: Optional[str] = None
+    createdAt: Optional[str] = None
+    updatedAt: Optional[str] = None
+    ownerId: Optional[str] = None
+    owner: Optional[User] = None
+    albumUsers: Optional[List[AlbumUser]] = None
+    shared: bool = False
+    hasSharedLink: bool = False
+    startDate: Optional[str] = None
+    endDate: Optional[str] = None
+    assets: Optional[list] = None
+    assetCount: int = 0
+    isActivityEnabled: bool = True
+    order: Optional[str] = None
+    lastModifiedAssetTimestamp: Optional[str] = None
     albumOrder: Optional[str] = None
     isPinned: bool = False
     timelineEnabled: bool = True
@@ -46,9 +54,12 @@ class Album:
 
     def __post_init__(self):
         if isinstance(self.owner, dict):
-            self.owner = User(**self.owner)
+            self.owner = User(**_filter_fields(User, self.owner))
         if isinstance(self.albumUsers, list):
-            self.albumUsers = [AlbumUser(**user) for user in self.albumUsers]
+            self.albumUsers = [
+                AlbumUser(**_filter_fields(AlbumUser, u)) if isinstance(u, dict) else u
+                for u in self.albumUsers
+            ]
 
     @classmethod
     def from_api_response(cls, data: dict) -> "Album":
@@ -105,25 +116,25 @@ class ExifInfo:
 @dataclass
 class ItemAsset:
     id: str
-    deviceAssetId: str
-    ownerId: str
-    deviceId: str
-    type: str
-    originalPath: str
-    originalFileName: str
-    originalMimeType: str
-    thumbhash: str
-    fileCreatedAt: str
-    createdAt: str
-    fileModifiedAt: str
-    localDateTime: str
-    updatedAt: str
-    isFavorite: bool
-    isArchived: bool
-    isTrashed: bool
-    visibility: str
-    duration: str
-    exifInfo: ExifInfo
+    deviceAssetId: Optional[str] = None
+    ownerId: Optional[str] = None
+    deviceId: Optional[str] = None
+    type: Optional[str] = None
+    originalPath: Optional[str] = None
+    originalFileName: Optional[str] = None
+    originalMimeType: Optional[str] = None
+    thumbhash: Optional[str] = None
+    fileCreatedAt: Optional[str] = None
+    createdAt: Optional[str] = None
+    fileModifiedAt: Optional[str] = None
+    localDateTime: Optional[str] = None
+    updatedAt: Optional[str] = None
+    isFavorite: bool = False
+    isArchived: bool = False
+    isTrashed: bool = False
+    visibility: Optional[str] = None
+    duration: Optional[str] = None
+    exifInfo: ExifInfo = field(default_factory=ExifInfo)
     libraryId: Optional[str] = None
     livePhotoVideoId: Optional[str] = None
     people: Optional[List[str]] = None
@@ -151,6 +162,8 @@ class ItemAsset:
     def __post_init__(self):
         if isinstance(self.exifInfo, dict):
             self.exifInfo = ExifInfo.from_api_response(self.exifInfo)
+        elif self.exifInfo is None:
+            self.exifInfo = ExifInfo()
 
     @classmethod
     def from_api_response(cls, data: dict) -> "ItemAsset":

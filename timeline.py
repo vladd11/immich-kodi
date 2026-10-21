@@ -36,6 +36,18 @@ def get_asset_info(id):
     return json.loads(conn.getresponse().read().decode("utf-8"))
 
 
+def _timeline_get(path, headers):
+    """GET a timeline endpoint including partners' assets, falling back to own assets
+    if the server rejects the request (error responses are JSON objects)."""
+    for suffix in ("&withPartners=true&visibility=timeline", ""):
+        conn.request("GET", path + suffix, "", headers)
+        res = json.loads(conn.getresponse().read().decode("utf-8"))
+        if suffix == "" or not (
+            isinstance(res, dict) and "message" in res and "statusCode" in res
+        ):
+            return res
+
+
 def time(id, video):
     xbmcplugin.setContent(HANDLE, "images")
 
@@ -44,13 +56,7 @@ def time(id, video):
         "User-agent": xbmc.getUserAgent(),
         "x-api-key": API_KEY,
     }
-    conn.request(
-        "GET",
-        "/api/timeline/bucket?size=MONTH&timeBucket=" + id,
-        "",
-        headers,
-    )
-    res = json.loads(conn.getresponse().read().decode("utf-8"))
+    res = _timeline_get("/api/timeline/bucket?size=MONTH&timeBucket=" + id, headers)
 
     items = []
 
@@ -89,8 +95,7 @@ def timeline(video):
         "User-agent": xbmc.getUserAgent(),
         "x-api-key": API_KEY,
     }
-    conn.request("GET", "/api/timeline/buckets?size=MONTH", "", headers)
-    res = json.loads(conn.getresponse().read().decode("utf-8"))
+    res = _timeline_get("/api/timeline/buckets?size=MONTH", headers)
     res = [TimelineBucket.from_api_response(i) for i in res]
 
     xbmcplugin.setContent(HANDLE, "files")

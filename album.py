@@ -48,6 +48,31 @@ def list_albums():
     xbmcplugin.endOfDirectory(HANDLE, cacheToDisc=False)
 
 
+def _search_album_assets(id):
+    headers = {
+        "Accept": "application/json",
+        "User-agent": xbmc.getUserAgent(),
+        "x-api-key": API_KEY,
+        "Content-Type": "application/json",
+    }
+    assets = []
+    page = 1
+    while page:
+        conn.request(
+            "POST",
+            "/api/search/metadata",
+            body=json.dumps(
+                {"albumIds": [id], "page": page, "size": 1000, "withExif": True}
+            ),
+            headers=headers,
+        )
+        resp = json.loads(conn.getresponse().read().decode("utf-8"))
+        block = resp["assets"] if isinstance(resp, dict) else {"items": resp}
+        assets.extend(block.get("items", []))
+        page = int(block["nextPage"]) if block.get("nextPage") else None
+    return assets
+
+
 def album(id):
     xbmcplugin.setContent(HANDLE, "images")
 
@@ -57,8 +82,13 @@ def album(id):
         "x-api-key": API_KEY,
     }
     conn.request("GET", f"/api/albums/{id}", "", headers)
-    res = json.loads(conn.getresponse().read().decode("utf-8"))["assets"]
+    data = json.loads(conn.getresponse().read().decode("utf-8"))
+    res = data.get("assets")
+    if res is None:
+        # Newer Immich versions no longer embed assets in the album response
+        res = _search_album_assets(id)
     res = [ItemAsset.from_api_response(i) for i in res]
+    res = [i for i in res if i.fileModifiedAt or i.exifInfo.dateTimeOriginal]
 
     for i in res:
         if not i.exifInfo.dateTimeOriginal:
